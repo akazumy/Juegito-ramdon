@@ -1,405 +1,263 @@
-<!doctype html>
-<html>
+
+<!DOCTYPE html>
+<html lang="es">
 
 <head>
-    <meta charset="utf-8" />
-
-    <title>Una pequeña flor</title>
+    <meta charset="UTF-8">
+    <title>Juego Especial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-            height: 100%;
-            width: 100%;
-            background: #080f1a;
-            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0e4d7;
         }
 
-        .container {
-            position: absolute;
-            left: 50%;
-            top: 30%;
-            transform: translate(-50%, -50%);
-        }
 
-        .glass {
-            height: 800px;
-            width: 600px;
-            background: #122139;
-            border-radius: 300px 300px 0px 0px;
-        }
-
-        .glass:before {
-            content: "";
-            height: 40px;
-            width: 40px;
-            transform-origin: center;
-            border: 25px solid #122139;
-            border-radius: 100%;
-            position: absolute;
-            left: 256px;
-            top: -74px;
-        }
-
-        .glass:after {
-            content: "";
-            position: absolute;
-            height: 15px;
-            width: 600px;
-            background: #a52a2a;
-            top: 100%;
-            left: 0%;
-        }
-
-        .shine {
-            width: 26px;
-            height: 330px;
-            background: white;
-            opacity: 0.2;
-            position: absolute;
-            left: 85%;
-            top: 200px;
-            border-radius: 100px;
-            z-index: 10;
-        }
-
-        .shine:before {
-            content: "";
-            width: 26px;
-            height: 40px;
-            position: absolute;
-            background: white;
-            top: 365px;
-            border-radius: 100px;
-        }
-
-        .petals>div {
-            position: absolute;
-            background: #d52d58;
-            width: 85px;
-            height: 120px;
-            top: 200px;
-            transition: all 0.5s ease-out;
-        }
-
-        .petals>div:nth-child(1) {
+        #invitation {
+            border: 2px solid black;
             border-radius: 15px;
-            box-shadow: 0px 0px 60px rgba(245, 148, 184, 1);
-            left: 268px;
-            top: 200px;
-            background: #d52d58;
+            background-color: #FFFFFF;
+            padding: 20px;
+            margin: auto;
+            width: 80%;
+            max-width: 600px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 24px;
+            color: #D68C45;
         }
 
-        .petals>div:nth-child(2),
-        .petals>div:nth-child(4),
-        .petals>div:nth-child(6) {
-            background: #b81b43;
-            left: 230px;
-            border-radius: 0px 50px 0px 50px;
-            transform-origin: bottom right;
+        #invitation {
+            display: none;
         }
 
-        .petals>div:nth-child(3),
-        .petals>div:nth-child(5),
-        .petals>div:nth-child(7) {
-            background: #b81b43;
-            left: 300px;
-            border-radius: 50px 0px 50px 0px;
-            transform-origin: bottom left;
+        #invitationLose {
+            border: 2px solid black;
+            border-radius: 15px;
+            background-color: #FFFFFF;
+            padding: 20px;
+            margin: auto;
+            width: 80%;
+            max-width: 600px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 24px;
+            color: #D68C45;
+            text-align: center;
         }
 
-        .petals>div:nth-child(2) {
-            z-index: 5;
-            background: #ab1a3f;
-            top: 218px;
-            height: 130px;
-            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
-            animation: bloom2 3s ease-in-out;
-            animation-fill-mode: forwards;
+        #invitationLose {
+            display: none;
         }
 
-        .petals>div:nth-child(3) {
-            z-index: 4;
-            background: #ab1a3f;
-            top: 218px;
-            height: 130px;
-            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
-            animation: bloom3 3s ease-in-out, glowing 2.5s ease-in-out infinite;
-            animation-fill-mode: forwards;
+        #gameContainer {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            width: 90%;
+            max-width: 320px;
+            margin-bottom: 20px;
         }
 
-        .petals>div:nth-child(4) {
-            z-index: 3;
-            background: #b81b43;
-            top: 213px;
-            height: 135px;
-            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
-            animation: bloom4 3s ease-in-out, glowing 2.5s ease-in-out infinite;
-            animation-fill-mode: forwards;
+        .card {
+            height: 80px;
+            background-color: #A7D7C5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            color: transparent;
+            transition: color 0.3s, transform 0.3s;
         }
 
-        .petals>div:nth-child(5) {
-            z-index: 2;
-            background: #b81b43;
-            top: 213px;
-            height: 135px;
-            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
-            animation: bloom5 3s ease-in-out, glowing 2.5s ease-in-out infinite;
-            animation-fill-mode: forwards;
+        .card.revealed,
+        .card.matched {
+            color: #444;
+            transform: scale(1.1);
         }
 
-        .petals>div:nth-child(6) {
-            z-index: 1;
-            background: #c9204b;
-            top: 200px;
-            height: 130px;
-            box-shadow: 0px 0px 60px rgba(245, 148, 184, .3);
-            animation: bloom6 3s ease-in-out, glowing 2.5s ease-in-out infinite;
-            animation-fill-mode: forwards;
+        .confetti {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background-color: #ff69b4;
+            opacity: 0.6;
+            border-radius: 50%;
         }
 
-        .petals>div:nth-child(7) {
-            z-index: 0;
-            background: #c9204b;
-            top: 200px;
-            height: 130px;
-            box-shadow: 0px 0px 60px rgba(245, 148, 184, .3);
-            animation: bloom7 3s ease-in-out, glowing 2.5s ease-in-out infinite;
-            animation-fill-mode: forwards;
+        #timer {
+            font-size: 24px;
+            color: #D68C45;
+            margin-bottom: 20px;
+        }
+        #timerText {
+            font-size: 24px;
+            color: #D68C45;
+            margin-bottom: 20px;
         }
 
-        .deadPetals>div {
-            position: absolute;
-            background: #d52d58;
-            width: 20px;
-            height: 15px;
-            top: 200px;
-            border-radius: 0px 30px 0px 30px;
-            box-shadow: 0px 0px 30px rgba(245, 148, 184, .5);
-            transition: all 0.5s ease-out;
-        }
-
-        .deadPetals>div:nth-child(1) {
-            left: 119229959987px;
-            transform: rotate(-30deg);
-            animation: falling 20s 4s ease-in-out infinite;
-        }
-
-        .deadPetals>div:nth-child(2) {
-            left: 26331084746px;
-            transform: rotate(-30deg);
-            animation: falling 20s 8s ease-in-out infinite;
-        }
-
-        .deadPetals>div:nth-child(3) {
-            left: 129759500363px;
-            transform: rotate(-30deg);
-            animation: falling 20s 12s ease-in-out infinite;
-        }
-
-        .deadPetals>div:nth-child(4) {
-            left: 99323149959px;
-            transform: rotate(-30deg);
-            animation: falling 20s 16s ease-in-out infinite;
-        }
-
-        .leaves>div:nth-last-child(1) {
-            position: absolute;
-            width: 55px;
-            height: 30px;
-            background: #338f37;
-            top: 334px;
-            left: 278px;
-            border-radius: 100px;
-        }
-
-        .leaves>div:nth-child(1) {
-            position: absolute;
-            width: 15px;
-            height: 390px;
-            background: #054c05;
-            top: 308px;
-            left: 300px;
-            border-radius: 0 0 100px 100px;
-        }
-
-        .leaves>div:nth-child(2) {
-            position: absolute;
+        .heart {
+            position: fixed;
+            bottom: -100px;
+            height: 60px;
             width: 60px;
-            height: 100px;
-            top: 53px;
-            border-radius: 10px 80px 40px 80px;
-            background: #054c05;
-            transform-origin: bottom;
-            transform: rotate(-30deg);
-            top: 412px;
-            left: 254px;
-            box-shadow: inset 10px 10px #066406;
+            font-size: 35px;
+            opacity: 0.7;
         }
 
-        .leaves>div:nth-child(3) {
-            position: absolute;
-            width: 60px;
-            height: 100px;
-            top: 53px;
-            border-radius: 80px 1px 80px 40px;
-            background: #054c05;
-            transform-origin: bottom;
-            transform: rotate(30deg);
-            top: 360px;
-            left: 300px;
-            box-shadow: inset -10px 10px #066406;
-        }
-
-        .thorns>div {
-            position: absolute;
-            width: 0;
-            height: 0;
-            top: 200px;
-        }
-
-        .thorns>div:nth-child(odd) {
-            border-top: 15px solid transparent;
-            border-bottom: 15px solid transparent;
-            border-left: 15px solid #054c05;
-            left: 315px;
-        }
-
-        .thorns>div:nth-child(even) {
-            border-top: 15px solid transparent;
-            border-bottom: 15px solid transparent;
-            border-right: 15px solid #054c05;
-            left: 285px;
-        }
-
-        .thorns>div:nth-child(1) {
-            top: 465px;
-        }
-
-        .thorns>div:nth-child(2) {
-            top: 390px;
-        }
-
-        .thorns>div:nth-child(4) {
-            top: 525px;
-        }
-
-        @keyframes bloom2 {
-            50% {
-                transform: rotate(-90deg);
-                top: 400px;
-                left: 150px;
+        @keyframes floating {
+            0% {
+                bottom: 100vh;
+                opacity: 0.7;
             }
 
             100% {
-                transform: rotate(-60deg);
-                top: 615px;
-                left: 100px;
-                background: #71122a;
-                box-shadow: 0px 0px 0px rgba(245, 148, 184, 0);
-            }
-        }
-
-        @keyframes bloom3 {
-            100% {
-                transform: rotate(50deg);
-            }
-        }
-
-        @keyframes bloom4 {
-            100% {
-                transform: rotate(-25deg);
-            }
-        }
-
-        @keyframes bloom5 {
-            100% {
-                transform: rotate(25deg);
-            }
-        }
-
-        @keyframes bloom6 {
-            100% {
-                transform: rotate(-10deg);
-            }
-        }
-
-        @keyframes bloom7 {
-            100% {
-                transform: rotate(10deg);
-            }
-        }
-
-        @keyframes glowing {
-            50% {
-                background: #d7365f;
-                box-shadow: 0px 0px 60px rgba(245, 148, 184, 1);
-            }
-        }
-
-        @keyframes falling {
-            20% {
-                top: 335px;
-                background: #9d193b;
-                box-shadow: 0px 0px 0px rgba(245, 148, 184, 0);
-            }
-
-            100% {
-                top: 335px;
+                bottom: -100vh;
                 opacity: 0;
             }
-        }
-
-        .texto {
-            top: 50%;
-            color: white;
-            font-size: 35px;
-            position: absolute;
-            left: 10%;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="glass">
-            <div class="shine"></div>
-        </div>
-        <div class="thorns">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="leaves">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="petals">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="deadPetals">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
-    <div>
-        <h4 class="texto" style="color: red;">Mi amor por ti durará hasta que caiga el último pétalo ❤️
-            Cada día es una prueba de amor y lealtad a ti siempre estaré esperándote
-            Siempre serás la única mujer para mí, no existe otra persona en este mundo que yo
-            Quisiera compartir algo con ella, te hago este código solamente para demostrar una pequeña 
-            parte de mi amor incondicional para ti, espero que puedas disfrutarla tanto como yo. Esta vez 
-            es un poco simple pero está hecha con mucho amor.</h4>
-        </h>
-    </div>
+    <div id="timerText">Adivina y ganas lo que quieras  esta noche. Tienes 30 segundos para encontrar todas las parejas</div>
+    <div id="timer">00:30</div>
+    <div id="gameContainer"></div>
+
+
+    <div id="invitation">¡Has ganado ¿Dime que cosa quieres?! 🎁</div> <!--ESTE ES EL TEXTO QUE SALDRÁ CUANDO GANE-->
+
+    <div id="invitationLose">¡Se ha acabado el tiempo! 
+        <br> 
+        Como premio de consolación te invito ha hacer lo que quieras conmigo esta noche 🎁 <!--ESTE ES EL TEXTO QUE SALDRÁ CUANDO PIERDA-->
+    </div> 
+
+
+    <script>
+        const confeti = '❤️'; //Este es el icono del confeti
+        const icons = ["🐣", "🐰", "🌷", "🥚", "🍫", "🎀", "🐣", "🐰", "🌷", "🥚", "🍫", "🎀"]; //Estos son los iconos de las cartas
+        let revealedCards = [];
+        let matchedPairs = 0;
+        let gameStarted = false;
+        let timerId;
+
+
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function createCard(icon) {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.textContent = icon;
+            card.onclick = () => revealCard(card, icon);
+            return card;
+        }
+
+        function revealCard(card, icon) {
+            if (card.classList.contains("revealed") || revealedCards.length === 2) {
+                return;
+            }
+
+            card.classList.add("revealed");
+            revealedCards.push({ card, icon });
+
+            if (revealedCards.length === 2) {
+                setTimeout(checkMatch, 500);
+            }
+        }
+
+        function checkMatch() {
+            const [firstCard, secondCard] = revealedCards;
+
+            if (firstCard.icon === secondCard.icon) {
+                firstCard.card.classList.add("matched");
+                secondCard.card.classList.add("matched");
+                matchedPairs++;
+                if (matchedPairs === icons.length / 2) {
+                    document.getElementById("gameContainer").style.display = "none";
+                    document.getElementById("timer").style.display = "none";
+                    document.getElementById("timerText").style.display = "none";
+                    document.getElementById("invitation").style.display = "flex";
+                    startConfetti();
+                }
+            } else {
+                firstCard.card.classList.remove("revealed");
+                secondCard.card.classList.remove("revealed");
+            }
+
+            revealedCards = [];
+        }
+
+        function startConfetti() {
+            for (let i = 0; i < 150; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.animation = 'floating ' + (2 + Math.random() * 3) + 's ease-in infinite';
+                heart.innerText = confeti;
+                heart.style.transform = 'rotate(' + 360 * Math.random() + 'deg)';
+                document.body.appendChild(heart);
+            }
+        }
+
+
+        function initializeGame() {
+            shuffleArray(icons);
+            const gameContainer = document.getElementById("gameContainer");
+            icons.forEach(icon => {
+                gameContainer.appendChild(createCard(icon));
+            });
+            startTimer();
+        }
+
+        function startTimer() {
+            let timeRemaining = 30;
+            timerId = setInterval(() => {
+                if (timeRemaining <= 0) {
+                    clearInterval(timerId);
+                    endGame();
+                } else {
+                    const minutes = String(Math.floor(timeRemaining / 60)).padStart(2, '0');
+                    const seconds = String(timeRemaining % 60).padStart(2, '0');
+                    document.getElementById("timer").textContent = `${minutes}:${seconds}`;
+                    timeRemaining--;
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            if (matchedPairs !== icons.length / 2) {
+                document.getElementById("gameContainer").style.display = "none";
+                document.getElementById("timer").style.display = "none";
+                document.getElementById("timerText").style.display = "none";
+                document.getElementById("invitationLose").style.display = "flex";
+                startConfetti();
+            }
+        }
+
+        initializeGame();
+    </script>
 </body>
 
 </html>
